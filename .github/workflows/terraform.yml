@@ -1,91 +1,95 @@
-# This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
-# with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
-# `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
-# to the main branch, `terraform apply` will be executed.
-#
-# Documentation for `hashicorp/setup-terraform` is located here: https://github.com/hashicorp/setup-terraform
-#
-# To use this workflow, you will need to complete the following setup steps.
-#
-# 1. Create a `main.tf` file in the root of this repository with the `remote` backend and one or more resources defined.
-#   Example `main.tf`:
-#     # The configuration for the `remote` backend.
-#     terraform {
-#       backend "remote" {
-#         # The name of your Terraform Cloud organization.
-#         organization = "example-organization"
-#
-#         # The name of the Terraform Cloud workspace to store Terraform state files in.
-#         workspaces {
-#           name = "example-workspace"
-#         }
-#       }
-#     }
-#
-#     # An example resource that does nothing.
-#     resource "null_resource" "example" {
-#       triggers = {
-#         value = "A example resource that does nothing!"
-#       }
-#     }
-#
-#
-# 2. Generate a Terraform Cloud user API token and store it as a GitHub secret (e.g. TF_API_TOKEN) on this repository.
-#   Documentation:
-#     - https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html
-#     - https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
-#
-# 3. Reference the GitHub secret in step using the `hashicorp/setup-terraform` GitHub Action.
-#   Example:
-#     - name: Setup Terraform
-#       uses: hashicorp/setup-terraform@v1
-#       with:
-#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-name: 'Terraform'
+name: Deploy
 
 on:
   push:
-    branches:
-    - main
-  pull_request:
+    branches: [main]
 
 jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
-    environment: production
+  
+  
+  # Prod: Terraform Steps
+  terraform-prod:
+    runs-on: ubuntu-18.04
+    steps:
+      # Checkout
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      - name: "Prod: Prepare Terraform Files"
+        run: |
+          unset AWS_SECRET_ACCESS_KEY
+          unset AWS_SECRET_KEY
+          unset AWS_SESSION_TOKEN
+          export AWS_ACCESS_KEY_ID=AKIAQRUH2KWCJSNECQOB
+          aws AWS_SECRET_ACCESS_KEY=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
+          aws AWS_REGION=us-east-1
+          APP_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          ROLE_RESPONSE=$(aws sts assume-role --role-arn arn:aws:iam::037865805188:role/terraform_role --role-session-name ci-session --output json)
+          export AWS_ACCESS_KEY_ID=ASIAQRUH2KWCGM56HROX
+          export AWS_SECRET_ACCESS_KEY=GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
+          export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' <<< "$ROLE_RESPONSE")
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+          APP_ENV=prod
+
+          sed -i 's|\$\$env\$\$|'"$APP_ENV"'|g' terraform/depl.tf
+          sed -i 's|\$\$accountId\$\$|'"$APP_ACCOUNT_ID"'|g' terraform/depl.tf
+          
+
+        env:
+          AWS_ACCESS_KEY_ID: ASIAQRUH2KWCGM56HROX
+          AWS_SECRET_ACCESS_KEY: GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
+      - name: "Prod: Terraform Init"
+        run: cd terraform/ && terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ASIAQRUH2KWCGM56HROX
+          AWS_SECRET_ACCESS_KEY: GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
+      - name: "Prod: Terraform Apply"
+        run: cd terraform/ && terraform apply -no-color -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ASIAQRUH2KWCGM56HROX
+          AWS_SECRET_ACCESS_KEY: GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
+
+
+
+  # Prod: Serverless Steps
+  serverless-prod:
+    needs: terraform-prod
+    runs-on: ubuntu-18.04
     defaults:
       run:
-        shell: bash
-
+        working-directory: .
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
+      # Checkout
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: "Prod: Install Serverless"
+        run: |
+          sudo npm install -g serverless
+      - name: "Prod: npm Install"
+        run: |
+          npm install
+      - name: "Prod: Prepare Serverless Files"
+        run: |
+          BUCKET_ENV=prod
+          APP_STACK_NAME=test
+          APP_SERVICE_NAME=test
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          sed -i 's|\$\$bucket_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
+          sed -i 's|\$\$pr_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
+          sed -i 's|\$\$stackName\$\$|'"$APP_STACK_NAME"'|g' serverless.yml
+          sed -i 's|\$\$serviceName\$\$|'"$APP_SERVICE_NAME"'|g' serverless.yml
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: cd terraform/ && terraform init -backend-config="access_key=AKIAQRUH2KWCJSNECQOB" -backend-config="secret_key=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"
-
-    # Checks that all Terraform configuration files adhere to a canonical format d
-    - name: Terraform Format
-      run: terraform fmt -check
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: cd terraform/ && terraform plan
-
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: cd terraform/ && terraform apply -auto-approve
+          LOG_GROUP=prod
+          sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
+        env:
+          AWS_ACCESS_KEY_ID: ASIAQRUH2KWCGM56HROX
+          AWS_SECRET_ACCESS_KEY: GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
+      - name: "Prod: Serverless Deploy"
+        run: |
+          pip install pipenv==2018.11.26
+          sls deploy --stage prod
+        env:
+          AWS_ACCESS_KEY_ID: ASIAQRUH2KWCGM56HROX
+          AWS_SECRET_ACCESS_KEY: GIRR0U3VuSGGKB/4LJIpTT/+wp5ED5Y7OBLPKSX2
