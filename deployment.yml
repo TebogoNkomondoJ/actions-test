@@ -16,6 +16,9 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
       - name: "Prod: Prepare Terraform Files"
         run: |
+          unset AWS_SECRET_ACCESS_KEY
+          unset AWS_SECRET_KEY
+          unset AWS_SESSION_TOKEN
           export AWS_ACCESS_KEY_ID=ASIAQRUH2KWCMS43YV4U
           aws AWS_SECRET_ACCESS_KEY=B/6jfl/aQAih3rdbfM2a4wjysQYRKMoLBxmkh9Di
           aws AWS_REGION=us-east-1
