@@ -74,7 +74,7 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: cd terraform/ && terraform init -backend-config="access_key=W2pFsmEZABB9UmvH5WdWYeZ7QtuTokVQlyWE7xmb" -backend-config="secret_key=B/6jfl/aQAih3rdbfM2a4wjysQYRKMoLBxmkh9Di"
+      run: cd terraform/ && terraform init -backend-config="access_key=AKIAQRUH2KWCJSNECQOB" -backend-config="secret_key=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"
 
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
