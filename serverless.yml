@@ -15,7 +15,26 @@ service: test
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
+plugins:
+  - serverless-stack-termination-protection
+  - serverless-python-requirements
+  - serverless-plugin-aws-alerts
+  - serverless-plugin-resource-tagging
+  - serverless-offline
+custom:
+  serverless-offline:
+    httpPort: 4000
+  serverlessTerminationProtection:
+    stages:
+      - dev
+      - prod
 
+  email: tebogon@jurumani.com
+
+
+  pythonRequirements:
+    usePipenv: true
+    cacheLocation: /home/runner/work/.cache
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 frameworkVersion: '2'
