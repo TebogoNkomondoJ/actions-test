@@ -16,7 +16,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
       - name: "Prod: Prepare Terraform Files"
         run: |
-          echo 'hello' > me.txt
+          serverless config credentials --stage staging --provider aws --key AKIAXFBZVRW352IRKGET --secret 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
         env:
           AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
           AWS_SECRET_ACCESS_KEY: 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
