@@ -54,6 +54,7 @@ jobs:
           sls plugin install -n serverless-python-requirements
           npm i serverless-plugin-aws-alerts
           npm install serverless-plugin-resource-tagging
+          npm install serverless-offline --save
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
