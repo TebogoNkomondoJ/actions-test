@@ -46,6 +46,7 @@ provider:
 
   deploymentBucket:
     name: tebogo-terraform-bucket-2
+    region: eu-west-1
 
 # you can overwrite defaults here
 #  stage: dev
