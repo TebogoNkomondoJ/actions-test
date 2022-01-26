@@ -50,11 +50,11 @@ jobs:
       - name: "Prod: Install Serverless"
         run: |
           sudo npm install -g serverless
-          npm install --save-dev serverless-stack-termination-protection
-          sls plugin install -n serverless-python-requirements
-          npm i serverless-plugin-aws-alerts
-          npm install serverless-plugin-resource-tagging
-          npm install serverless-offline --save
+          sudo npm install --save-dev serverless-stack-termination-protection
+          sudo sls plugin install -n serverless-python-requirements
+          sudo npm i serverless-plugin-aws-alerts
+          sudo npm install serverless-plugin-resource-tagging
+          sudo npm install serverless-offline --save
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
