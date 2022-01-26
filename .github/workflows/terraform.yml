@@ -61,20 +61,20 @@ jobs:
           APP_STACK_NAME=test
           APP_SERVICE_NAME=test
 
-          sed -i 's|\$\$bucket_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
-          sed -i 's|\$\$pr_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
-          sed -i 's|\$\$stackName\$\$|'"$APP_STACK_NAME"'|g' serverless.yml
-          sed -i 's|\$\$serviceName\$\$|'"$APP_SERVICE_NAME"'|g' serverless.yml
+          sudo sed -i 's|\$\$bucket_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
+          sudo sed -i 's|\$\$pr_env\$\$|'"$BUCKET_ENV"'|g' serverless.yml
+          sudo sed -i 's|\$\$stackName\$\$|'"$APP_STACK_NAME"'|g' serverless.yml
+          sudo sed -i 's|\$\$serviceName\$\$|'"$APP_SERVICE_NAME"'|g' serverless.yml
 
           LOG_GROUP=prod
-          sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
+          sudo sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
         env:
           AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
           AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Serverless Deploy"
         run: |
-          pip install pipenv==2018.11.26
-          sls deploy --stage prod
+          sudo pip install pipenv==2018.11.26
+          sudo sls deploy --stage prod
         env:
           AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
           AWS_SECRET_ACCESS_KEY: 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
