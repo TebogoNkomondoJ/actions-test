@@ -50,6 +50,7 @@ jobs:
       - name: "Prod: Install Serverless"
         run: |
           sudo npm install -g serverless
+          npm install --save-dev serverless-stack-termination-protection
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
