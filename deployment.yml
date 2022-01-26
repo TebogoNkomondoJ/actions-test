@@ -21,7 +21,7 @@ jobs:
           unset AWS_SESSION_TOKEN
           export AWS_ACCESS_KEY_ID=AKIAXFBZVRW352IRKGET
           aws AWS_SECRET_ACCESS_KEY=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
-          aws AWS_REGION=us-east-1
+          aws AWS_REGION=eu-west-1
           APP_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           ROLE_RESPONSE=$(aws sts assume-role --role-arn arn:aws:iam::037865805188:role/terraform_role --role-session-name ci-session --output json)
           export AWS_ACCESS_KEY_ID=AKIAXFBZVRW352IRKGET
