@@ -18,18 +18,18 @@ jobs:
         run: |
           echo 'hello' > me.txt
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Init"
-        run: cd terraform/ && terraform init -backend-config="access_key=AKIAQOHUDTPQNAZOKHML" -backend-config="secret_key=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"
+        run: cd terraform/ && terraform init -backend-config="access_key=AKIAXFBZVRW352IRKGET" -backend-config="secret_key=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"
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Apply"
         run: cd terraform/ && terraform apply -no-color -auto-approve
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
 
 
 
@@ -69,12 +69,12 @@ jobs:
           LOG_GROUP=prod
           sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Serverless Deploy"
         run: |
           pip install pipenv==2018.11.26
           sls deploy --stage prod
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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

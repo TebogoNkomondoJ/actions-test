@@ -1,16 +1,17 @@
 provider "aws" {
   assume_role {
-    role_arn = "arn:aws:iam::030576712672:role/terraform_role"
+    role_arn = "arn:aws:iam::491894705591:role/tebogo-terraform-role"
   }
-  region = "us-east-1"
+  region = "eu-west-1"
 }
 
 terraform {
   backend "s3" {
-    bucket   = "tebogo-s3-djsbjb"   
+    bucket   = "tebogo-terraform-depl-20193"   
     key      = "test/terraform_cicd_user.tfstate"
-    region   = "us-east-1"
-    role_arn = "arn:aws:iam::030576712672:role/terraform_role"
+    region   = "eu-west-1"
+    role_arn = "arn:aws:iam::491894705591:role/tebogo-terraform-role"
   }
 }
  
+

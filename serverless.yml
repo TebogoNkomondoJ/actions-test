@@ -45,7 +45,7 @@ provider:
   lambdaHashingVersion: 20201221
 
   deploymentBucket:
-    name: tebogo-deply-1244214
+    name: tebogo-terraform-bucket-2
 
 # you can overwrite defaults here
 #  stage: dev

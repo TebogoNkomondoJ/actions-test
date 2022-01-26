@@ -19,13 +19,13 @@ jobs:
           unset AWS_SECRET_ACCESS_KEY
           unset AWS_SECRET_KEY
           unset AWS_SESSION_TOKEN
-          export AWS_ACCESS_KEY_ID=AKIAQRUH2KWCJSNECQOB
+          export AWS_ACCESS_KEY_ID=AKIAXFBZVRW352IRKGET
           aws AWS_SECRET_ACCESS_KEY=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
           aws AWS_REGION=us-east-1
           APP_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           ROLE_RESPONSE=$(aws sts assume-role --role-arn arn:aws:iam::037865805188:role/terraform_role --role-session-name ci-session --output json)
-          export AWS_ACCESS_KEY_ID=AKIAQOHUDTPQNAZOKHML
-          export AWS_SECRET_ACCESS_KEY=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
+          export AWS_ACCESS_KEY_ID=AKIAXFBZVRW352IRKGET
+          export AWS_SECRET_ACCESS_KEY=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
           export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' <<< "$ROLE_RESPONSE")
 
           APP_ENV=prod
@@ -35,18 +35,18 @@ jobs:
           
 
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Init"
         run: cd terraform/ && terraform init
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Apply"
         run: cd terraform/ && terraform apply -no-color -auto-approve
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
 
 
 
@@ -84,12 +84,12 @@ jobs:
           LOG_GROUP=prod
           sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Serverless Deploy"
         run: |
           pip install pipenv==2018.11.26
           sls deploy --stage prod
         env:
-          AWS_ACCESS_KEY_ID: AKIAQOHUDTPQNAZOKHML
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
+          AWS_SECRET_ACCESS_KEY: 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
