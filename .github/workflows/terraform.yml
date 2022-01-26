@@ -52,6 +52,7 @@ jobs:
           sudo npm install -g serverless
           npm install --save-dev serverless-stack-termination-protection
           sls plugin install -n serverless-python-requirements
+          npm i serverless-plugin-aws-alerts
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
