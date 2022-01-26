@@ -8,7 +8,7 @@ jobs:
   
   
   # Prod: Terraform Steps
-  terraform-prod:
+  terraform-prod: 
     runs-on: ubuntu-18.04
     steps:
       # Checkout
