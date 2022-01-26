@@ -50,7 +50,7 @@ jobs:
       - name: "Prod: Install Serverless"
         run: |
           sudo npm install -g serverless
-      - name: "Prod: npm Install"
+      - name: "Prod: npm -g Install"
         run: |
           npm install
       - name: "Prod: Prepare Serverless Files"
