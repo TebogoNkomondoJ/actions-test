@@ -77,7 +77,7 @@ provider:
 #package:
 #  patterns:
 #    - '!exclude-me.py'
-#    - '!exclude-me-dir/**'
+#    - '!exclude-me-dir/**' 
 #    - include-me.py
 #    - include-me-dir/**
 
