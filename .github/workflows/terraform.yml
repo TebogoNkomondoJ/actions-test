@@ -18,18 +18,18 @@ jobs:
         run: |
           echo 'hello' > me.txt
         env:
-          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW3Z4FXL5HT
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Init"
-        run: cd terraform/ && terraform init -backend-config="access_key=AKIAXFBZVRW352IRKGET" -backend-config="secret_key=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"
+        run: cd terraform/ && terraform init -backend-config="access_key=AKIAXFBZVRW3Z4FXL5HT" -backend-config="secret_key=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"
         env:
-          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW3Z4FXL5HT
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Terraform Apply"
         run: cd terraform/ && terraform apply -no-color -auto-approve
         env:
-          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW3Z4FXL5HT
+          AWS_SECRET_ACCESS_KEY: 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
 
 
 
@@ -55,7 +55,7 @@ jobs:
           sudo npm i serverless-plugin-aws-alerts
           sudo npm install serverless-plugin-resource-tagging
           sudo npm install serverless-offline --save
-          sudo serverless config credentials --stage staging --provider aws --key AKIAXFBZVRW352IRKGET --secret 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
+          sudo serverless config credentials --stage staging --provider aws --key AKIAXFBZVRW3Z4FXL5HT --secret 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
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
@@ -70,12 +70,12 @@ jobs:
           LOG_GROUP=prod
           sudo sed -i 's|\$\$logGroup\$\$|'"$LOG_GROUP"'|g' serverless.yml
         env:
-          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW3Z4FXL5HT
+          AWS_SECRET_ACCESS_KEY: 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
       - name: "Prod: Serverless Deploy"
         run: |
           sudo pip install pipenv==2018.11.26
           sudo sls deploy --stage prod
         env:
-          AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
-          AWS_SECRET_ACCESS_KEY: 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
+          AWS_ACCESS_KEY_ID: AKIAXFBZVRW3Z4FXL5HT
+          AWS_SECRET_ACCESS_KEY: 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
