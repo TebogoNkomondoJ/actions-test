@@ -51,7 +51,7 @@ jobs:
         run: |
           sudo npm install -g serverless
           npm install --save-dev serverless-stack-termination-protection
-          npm serverless-python-requirements
+          sls plugin install -n serverless-python-requirements
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
