@@ -16,7 +16,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
       - name: "Prod: Prepare Terraform Files"
         run: |
-          serverless config credentials --stage staging --provider aws --key AKIAXFBZVRW352IRKGET --secret 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
+          echo 'hello' > me.txt
         env:
           AWS_ACCESS_KEY_ID: AKIAXFBZVRW352IRKGET
           AWS_SECRET_ACCESS_KEY: 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
@@ -55,6 +55,7 @@ jobs:
           sudo npm i serverless-plugin-aws-alerts
           sudo npm install serverless-plugin-resource-tagging
           sudo npm install serverless-offline --save
+          sudo serverless config credentials --stage staging --provider aws --key AKIAXFBZVRW352IRKGET --secret 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
       - name: "Prod: Prepare Serverless Files"
         run: |
           BUCKET_ENV=prod
