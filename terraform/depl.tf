@@ -13,3 +13,4 @@ terraform {
     role_arn = "arn:aws:iam::030576712672:role/terraform_role"
   }
 }
+ 
