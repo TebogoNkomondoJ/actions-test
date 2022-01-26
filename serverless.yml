@@ -47,12 +47,10 @@ provider:
   deploymentBucket:
     name: tebogo-terraform-bucket-2
 
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "*"
-      Resource:
-        - "*"
+  iam:
+    role: arn:aws:iam::491894705591:role/tebogo-terraform-depl
+    deploymentRole: arn:aws:iam::491894705591:role/tebogo-terraform-depl2
+
     
 
 # you can overwrite defaults here
